@@ -1,17 +1,9 @@
 package com.miniproject.safety_health
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,9 +23,23 @@ fun LoginScreen(viewModel: AuthViewModel, onLoginSuccess: () -> Unit) {
 
         val firebaseError = viewModel.authErrorMessage
 
+        // Custom colors for dark background
+        val textFieldColors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = Color.White,
+            unfocusedTextColor = Color.LightGray,
+            focusedBorderColor = Color.Cyan,
+            unfocusedBorderColor = Color.Gray,
+            focusedLabelColor = Color.Cyan,
+            unfocusedLabelColor = Color.Gray,
+            cursorColor = Color.Cyan,
+            errorBorderColor = Color.Red,
+            errorLabelColor = Color.Red
+        )
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.Black)
                 .padding(24.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -44,10 +50,11 @@ fun LoginScreen(viewModel: AuthViewModel, onLoginSuccess: () -> Unit) {
                 Text(
                     text = if (isLogin) "Login" else "Register",
                     fontSize = 26.sp,
-                    color = MaterialTheme.colorScheme.primary
+                    color = Color.White,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
 
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(16.dp))
 
                 OutlinedTextField(
                     value = email,
@@ -60,13 +67,10 @@ fun LoginScreen(viewModel: AuthViewModel, onLoginSuccess: () -> Unit) {
                     isError = localError?.contains("email", true) == true ||
                             firebaseError?.contains("email", true) == true,
                     modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        cursorColor = MaterialTheme.colorScheme.primary
-                    )
+                    colors = textFieldColors
                 )
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(16.dp))
 
                 OutlinedTextField(
                     value = password,
@@ -80,30 +84,20 @@ fun LoginScreen(viewModel: AuthViewModel, onLoginSuccess: () -> Unit) {
                     isError = localError?.contains("password", true) == true ||
                             firebaseError?.contains("password", true) == true,
                     modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        cursorColor = MaterialTheme.colorScheme.primary
-                    )
+                    colors = textFieldColors
                 )
 
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(24.dp))
 
                 Button(
                     onClick = {
                         val trimmedEmail = email.trim()
                         val trimmedPassword = password.trim()
 
-                        // Validate input
                         when {
-                            trimmedEmail.isEmpty() -> {
-                                localError = "Email can't be empty"
-                            }
-                            !trimmedEmail.contains("@") -> {
-                                localError = "Please enter a valid email"
-                            }
-                            trimmedPassword.length < 6 -> {
-                                localError = "Password must be at least 6 characters"
-                            }
+                            trimmedEmail.isEmpty() -> localError = "Email can't be empty"
+                            !trimmedEmail.contains("@") -> localError = "Please enter a valid email"
+                            trimmedPassword.length < 6 -> localError = "Password must be at least 6 characters"
                             else -> {
                                 localError = null
                                 isProcessing = true
@@ -124,36 +118,45 @@ fun LoginScreen(viewModel: AuthViewModel, onLoginSuccess: () -> Unit) {
                     enabled = !isProcessing,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(50.dp)
-                ) {
-                    Text(
-                        if (isLogin) "Login" else "Register",
-                        color = Color.White
+                        .height(50.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Cyan,
+                        contentColor = Color.Black
                     )
+                ) {
+                    Text(if (isLogin) "Login" else "Register")
                 }
 
                 TextButton(
                     onClick = { isLogin = !isLogin },
-                    modifier = Modifier.padding(top = 8.dp)
+                    modifier = Modifier.padding(top = 12.dp)
                 ) {
                     Text(
-                        if (isLogin)
+                        text = if (isLogin)
                             "Don't have an account? Register"
                         else
                             "Already have an account? Login",
-                        color = MaterialTheme.colorScheme.secondary
+                        color = Color.LightGray
                     )
                 }
 
-                // Show any error
-                localError?.let {
+                // Error messages
+                if (!localError.isNullOrEmpty()) {
                     Spacer(Modifier.height(12.dp))
-                    Text(text = it, color = Color.Red)
+                    Text(
+                        text = localError!!,
+                        color = Color.Red,
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    )
                 }
 
                 firebaseError?.let {
                     Spacer(Modifier.height(8.dp))
-                    Text(text = it, color = Color.Red)
+                    Text(
+                        text = it,
+                        color = Color.Red,
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    )
                 }
             }
         }
