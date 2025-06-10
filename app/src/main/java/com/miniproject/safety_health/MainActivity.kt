@@ -24,9 +24,9 @@ import com.miniproject.safety_health.ui.theme.HealthMonitorTheme
 
 sealed class Screen(val route: String, val icon: Int, val title: String) {
     object Dashboard : Screen("dashboard", R.drawable.ic_dashboard, "Dashboard")
+    object Alerts : Screen("alerts", R.drawable.ic_alert, "Alerts")
     object Chatbot : Screen("chatbot", R.drawable.ic_chat, "Chatbot")
     object History : Screen("history", R.drawable.ic_history, "History")
-    object Alerts : Screen("alerts", R.drawable.ic_alert, "Alerts")
 }
 
 class MainActivity : ComponentActivity() {
@@ -59,9 +59,9 @@ fun MainScreen(onLogout: () -> Unit) {
     val navController = rememberNavController()
     val items = listOf(
         Screen.Dashboard,
+        Screen.Alerts,
         Screen.Chatbot,
         Screen.History,
-        Screen.Alerts
     )
 
     Scaffold(
@@ -74,9 +74,9 @@ fun MainScreen(onLogout: () -> Unit) {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Dashboard.route) { DashboardScreen(onLogout) }
+            composable(Screen.Alerts.route) { AlertScreen() }
             composable(Screen.Chatbot.route) { ChatbotScreen() }
             composable(Screen.History.route) { HistoryScreen() }
-            composable(Screen.Alerts.route) { AlertScreen() }
         }
     }
 }
