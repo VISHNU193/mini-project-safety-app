@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "492785043418",
+    "project_id": "safety-health-76906",
+    "storage_bucket": "safety-health-76906.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:492785043418:android:f2fe3ff12b7544cb9862e3",
+        "android_client_info": {
+          "package_name": "com.miniproject.safety_health"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdXwY8M0hSPzGyHVP8r5MNBeUGKCrXqYI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
