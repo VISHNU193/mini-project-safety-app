@@ -26,7 +26,7 @@ sealed class Screen(val route: String, val icon: Int, val title: String) {
     object Dashboard : Screen("dashboard", R.drawable.ic_dashboard, "Dashboard")
     object Alerts : Screen("alerts", R.drawable.ic_alert, "Alerts")
     object Chatbot : Screen("chatbot", R.drawable.ic_chat, "Chatbot")
-    object History : Screen("history", R.drawable.ic_history, "History")
+//    object History : Screen("history", R.drawable.ic_history, "History")
 }
 
 class MainActivity : ComponentActivity() {
@@ -61,7 +61,6 @@ fun MainScreen(onLogout: () -> Unit) {
         Screen.Dashboard,
         Screen.Alerts,
         Screen.Chatbot,
-        Screen.History,
     )
 
     Scaffold(
@@ -76,7 +75,6 @@ fun MainScreen(onLogout: () -> Unit) {
             composable(Screen.Dashboard.route) { DashboardScreen(onLogout) }
             composable(Screen.Alerts.route) { AlertScreen() }
             composable(Screen.Chatbot.route) { ChatbotScreen() }
-            composable(Screen.History.route) { HistoryScreen() }
         }
     }
 }
